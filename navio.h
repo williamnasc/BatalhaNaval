@@ -14,8 +14,8 @@ public:
     Navio();
     virtual ~Navio();
     inline int getSize() const {return posicoes.size();}
-    virtual void ler(istream &I);
-    virtual bool isDestruido();
+    virtual void ler(istream &I)=0;
+    virtual bool isDestruido()=0;
 
 };
 
