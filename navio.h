@@ -5,17 +5,22 @@
 #include <list>
 #include <algorithm>
 
+#define N_MAX_SUB 2
 
 class Navio
 {
 protected:
     vector<Pos> posicoes;
 public:
-    Navio();
+    Navio(int t);
     virtual ~Navio();
     inline int getSize() const {return posicoes.size();}
     virtual void ler(istream &I)=0;
     virtual bool isDestruido()=0;
+
+};
+
+class PortaAvioes: Navio{
 
 };
 
