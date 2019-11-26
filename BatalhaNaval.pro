@@ -6,8 +6,10 @@ CONFIG -= qt
 SOURCES += \
         main.cpp \
         navio.cpp \
-        pos.cpp
+        pos.cpp \
+        tabuleiro.cpp
 
 HEADERS += \
     navio.h \
-    pos.h
+    pos.h \
+    tabuleiro.h
