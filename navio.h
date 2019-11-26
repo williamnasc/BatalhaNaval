@@ -12,7 +12,7 @@ protected:
     vector<Pos> posicoes;
 public:
     Navio();
-
+    inline int getSize() const {return posicoes.size();}
     virtual void ler(istream &I);
     virtual bool isDestruido();
 };
