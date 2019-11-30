@@ -3,44 +3,37 @@
 
 #include <pos.h>
 #include <list>
+#include <vector>
 #include <algorithm>
 
-#define NUM_MAX_P 2
-#define NUM_MAX_C 2
-#define NUM_MAX_D 2
-#define NUM_MAX_S 2
 
 class Navio
 {
 protected:
-    vector<Pos> posicoes;
+    Pos p;
+    char dir;
+    unsigned tiros_levados;
 public:
-    Navio();
-    inline Navio(int i){posicoes.resize(i);}
+    inline Navio(): p(), dir(' '),tiros_levados(0){;}
+    inline Navio(const Pos &ponto){
+        bool igual = p==ponto;
+        if(igual == false) p=ponto;
+    }
+    inline Navio(char direcao){
+        if(direcao=='v' || direcao=='V' || direcao=='h' || direcao=='H') dir = direcao;
+    }
+    inline Navio(unsigned tiros){
+        if(tiros >= 0) tiros_levados = tiros;
+    }
+    inline Navio(const Ponto &ponto, char direcao){
+        bool igual = p==ponto;
+        if(igual == false) p=ponto;
+        if(direcao=='v' || direcao=='V' || direcao=='h' || direcao=='H') dir = direcao;
+    }
+    virtual int getSize() const = 0;
     virtual ~Navio();
-    inline int getSize() const {return posicoes.size();}
-    bool posicionar(Pos p, char c);
     virtual void ler(istream &I)=0;
     virtual bool isDestruido()=0;
-    //fazer a sobrecarga do I e O stream como virtual
-
-};
-
-class PortaAvioes: Navio{
-    inline PortaAvioes():Navio(5){}
-    PortaAvioes(Pos p, char dir);
-};
-class Cruzador: Navio{
-    inline Cruzador():Navio(4){}
-    Cruzador(Pos p, char dir);
-};
-class Destroyer: Navio{
-    inline Destroyer():Navio(3){}
-    Destroyer(Pos p, char dir);
-};
-class Submarino: Navio{
-    inline Submarino():Navio(2){}
-    Submarino(Pos p, char dir);
 };
 
 #endif // NAVIO_H
