@@ -2,6 +2,7 @@
 #define POS_H
 
 #include <iostream>
+#include <fstream>
 #include <string>
 using namespace std;
 
@@ -32,8 +33,8 @@ public:
     Pos nextHorizontalDireita();
     Pos nextHorizontalEsquerda();
 
-    void operator=(const Pos p);
-    bool operator==(const Pos p); 
+    void operator=(const Pos& p);
+    bool operator==(const Pos& p);
 };
 
 #endif // POS_H

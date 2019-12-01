@@ -25,15 +25,69 @@ public:
     inline Navio(unsigned tiros){
         if(tiros >= 0) tiros_levados = tiros;
     }
-    inline Navio(const Ponto &ponto, char direcao){
+    inline Navio(const Pos &ponto, char direcao){
         bool igual = p==ponto;
         if(igual == false) p=ponto;
         if(direcao=='v' || direcao=='V' || direcao=='h' || direcao=='H') dir = direcao;
+        else  dir = '0';
     }
     virtual int getSize() const = 0;
-    virtual ~Navio();
-    virtual void ler(istream &I)=0;
-    virtual bool isDestruido()=0;
+    virtual inline ~Navio(){}
+    //virtual void ler(istream &I)=0;
+    //virtual bool isDestruido()=0;
 };
+
+class Porta_Avioes: public Navio
+{
+public:
+    inline ~Porta_Avioes(){}
+    inline Porta_Avioes(): Navio(){}
+    inline Porta_Avioes(char direcao):Navio(direcao){}
+    inline Porta_Avioes(unsigned tiros):Navio(tiros){}
+    inline Porta_Avioes(const Pos &ponto, char direcao):Navio(ponto,direcao){}
+
+    inline int getSize() const {return 5;}
+    inline bool isDestruido() {if(tiros_levados == 5) return true; else return false;}
+};
+
+class Cruzador: public Navio
+{
+public:
+    inline ~Cruzador(){}
+    inline Cruzador(): Navio(){}
+    inline Cruzador(char direcao):Navio(direcao){}
+    inline Cruzador(unsigned tiros):Navio(tiros){}
+    inline Cruzador(const Pos &ponto, char direcao):Navio(ponto,direcao){}
+
+    inline int getSize() const {return 4;}
+    inline bool isDestruido() {if(tiros_levados == 4) return true; else return false;}
+};
+
+class Destroyer: public Navio
+{
+public:
+    inline ~Destroyer(){}
+    inline Destroyer(): Navio(){}
+    inline Destroyer(char direcao):Navio(direcao){}
+    inline Destroyer(unsigned tiros):Navio(tiros){}
+    inline Destroyer(const Pos &ponto, char direcao):Navio(ponto,direcao){}
+
+    inline int getSize() const {return 3;}
+    inline bool isDestruido() {if(tiros_levados == 3) return true; else return false;}
+};
+
+class Submarino: public Navio
+{
+public:
+    inline ~Submarino(){}
+    inline Submarino(): Navio(){}
+    inline Submarino(char direcao):Navio(direcao){}
+    inline Submarino(unsigned tiros):Navio(tiros){}
+    inline Submarino(const Pos &ponto, char direcao):Navio(ponto,direcao){}
+
+    inline int getSize() const {return 2;}
+    inline bool isDestruido() {if(tiros_levados == 2) return true; else return false;}
+};
+
 
 #endif // NAVIO_H

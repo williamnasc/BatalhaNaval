@@ -1,6 +1,13 @@
 #include "tabuleiro.h"
 
-Tabuleiro::Tabuleiro()
-{
+bool Tabuleiro::ler(istream &I){
+    string s;
 
+    I >> s;
+
+    cout << s;
+    if(s != "BATALHA_NAVAL") return false;
+
+
+    return true;
 }
