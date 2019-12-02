@@ -31,7 +31,22 @@ public:
 
 };
 
-//inline ostream &operator<<(ostream &O, const Tabuleiro &X);
+inline ostream &operator<<(ostream &O, const Tabuleiro &X){
+    char c1 = '@';
+    cout << "  ";
+    for(unsigned i = 1; i < 10; i++) O << ' ' << i;
+    O << ' ' << 0 << endl;
+    O << endl;
+    for(unsigned i = 0; i < 10; i++){
+            c1 = c1+1;
+        O << char(c1) << "  ";
+        for(unsigned j = 0; j < 10; j++){
+            O << '_' << ' ';
+        }
+        O << endl;
+    }
+    return O;
+}
 
 
 #endif // TABULEIRO_H
