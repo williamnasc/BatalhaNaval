@@ -29,9 +29,9 @@ public:
     inline Navio(unsigned tiros){
         if(tiros >= 0) tiros_levados = tiros;
     }
-    inline Navio(const Pos &ponto, char direcao){
-        bool igual = p==ponto;
-        if(igual == false) p=ponto;
+    inline Navio(const Pos &pos, char direcao){
+        bool igual = p==pos;
+        if(igual == false) p=pos;
         if(direcao=='v' || direcao=='V' || direcao=='h' || direcao=='H') dir = direcao;
         else  dir = '0';
     }
