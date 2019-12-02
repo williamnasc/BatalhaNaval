@@ -30,9 +30,12 @@ bool Tabuleiro::addToTab(Navio &nav){
     }
     //se chegar aqui é pq todos as posições estão livres
     // add o navio ao Tab (altera o estado das posições)
-    /*for (int i=0;;;) {
-
-    }*/
+    for (int i=0;i<nav.getSize();i++){
+        if(nav.getDir() =='h'|| nav.getDir() =='H')
+            tab[10*(nav.getPos().lin)+(nav.getPos().col+i)] = nav.getEstado();
+        if(nav.getDir() =='v'|| nav.getDir() =='V')
+            tab[10*(nav.getPos().lin+i)+(nav.getPos().col)] = nav.getEstado();
+    }
 }
 
 bool Tabuleiro::isLivre(Pos p){
@@ -47,6 +50,8 @@ bool Tabuleiro::isLivre(Pos p){
 //apenas adiciona no conteiner,
 //falta tratar os erros e especificações do projeto
 //falta alterar o tabuleiro ao add navios
+//bug se o numero de navios do navio diferente do numero maximo de navios
+//TODO ERRADO!!!!!!!!!!!
 bool Tabuleiro::ler(istream &I){
     string s;
     Pos p;

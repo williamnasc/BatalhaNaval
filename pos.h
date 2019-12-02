@@ -6,6 +6,20 @@
 #include <string>
 using namespace std;
 
+/// Os possiveis estados de uma posição do mapa
+enum class EstadoPos
+{
+  LIVRE,
+  BLOQUEADA,
+  ATINGIDA,
+  PORTA_AVIAO,
+  CRUZADOR,
+  DESTROYER,
+  SUBMARINO
+};
+
+
+
 class Pos
 {
 public:

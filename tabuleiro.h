@@ -2,19 +2,7 @@
 #define TABULEIRO_H
 
 #include "navio.h"
-
-/// Os possiveis estados de uma posição do mapa
-enum class EstadoPos
-{
-  LIVRE,
-  BLOQUEADA,
-  ATINGIDA,
-  PORTA_AVIAO,
-  CRUZADOR,
-  DESTROYER,
-  SUBMARINO
-};
-
+#include "pos.h"
 
 typedef Navio* ptr_Navio;
 
@@ -34,11 +22,11 @@ public:
 
     ///METODOS
     void initTab();             //inicia o tabuleiro com todas as posições livres
-    bool addToTab(Navio &Nav);              //atualiza o tabuleiro depois de adicionados os respectivos navios
+    bool addToTab(Navio &Nav);  //atualiza o tabuleiro depois de adicionados os respectivos navios
 
     bool isLivre(Pos p);        //checa se é possivel colocar um navio nessa posição
     bool ler(istream &I);       //ler de arquivo
-    bool digitar();   //ler do usuario
+    bool digitar();             //ler do usuario
 
 
 };
