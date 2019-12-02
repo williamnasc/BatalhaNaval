@@ -125,6 +125,16 @@ Pos Pos::nextHorizontalEsquerda(){
     }
 }
 
+Pos Pos::digitarPos(){
+    char l, c;
+    cout << "Digite a linha[A-B ou a-b]: ";
+    cin >> l;
+    cout << "Digite a coluna[0-9]: ";
+    cin >> c;
+    Pos novo(l, c);
+    return novo;
+}
+
 void Pos::operator=(const Pos& p){
     lin = p.lin;
     col = p.col;
