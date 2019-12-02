@@ -22,22 +22,24 @@ class Tabuleiro
 {
 private:
     list<ptr_Navio> navios;
-
-    vector<EstadoPos> mapa;
-    int NLin;
-    int Ncol;
-
-
+    vector<EstadoPos> tab;
+    int NLin = 10;
+    int Ncol = 10;
 
 public:
     ///CONSTRUTORES E DESTRUTORES
     inline Tabuleiro(){}
-     ~Tabuleiro(){}
+    ~Tabuleiro(){}
 
     ///METODOS
-    bool isLivre(Pos); //checa se é possivel colocar um navio nessa posição
-    bool ler(istream &I); //ler de arquivo
-    bool digitar(istream &I); //ler do usuario
+    void initTab();             //inicia o tabuleiro com todas as posições livres
+    void attTab();              //atualiza o tabuleiro depois de adicionados os respectivos navios
+
+    bool isLivre(Pos p);        //checa se é possivel colocar um navio nessa posição
+    bool ler(istream &I);       //ler de arquivo
+    bool digitar(istream &I);   //ler do usuario
+
+
 };
 
 //inline ostream &operator<<(ostream &O, const Tabuleiro &X);

@@ -1,5 +1,24 @@
 #include "tabuleiro.h"
 
+void Tabuleiro::initTab(){
+    tab.resize(NLin*Ncol);
+
+    for (int i=0;i<NLin*Ncol;i++){
+        tab[i] = EstadoPos::LIVRE;
+    }
+}
+
+bool Tabuleiro::isLivre(Pos p){
+    if(tab[10*p.lin+p.col] == EstadoPos::LIVRE)
+        return true;
+    else
+        return false;
+}
+
+
+//apenas adiciona no conteiner,
+//falta tratar os erros e especificações do projeto
+//falta alterar o tabuleiro ao add navios
 bool Tabuleiro::ler(istream &I){
     string s;
     Pos p;
@@ -52,4 +71,75 @@ bool Tabuleiro::ler(istream &I){
         return false;
     }
     return true;
+}
+
+//falta perceber se ele é grande demais pra ser colocado naquela posição
+//falta alterar o tabuleiro ao add navios
+bool Tabuleiro::digitar(istream &I){
+    Pos p;
+    char dir;
+    for (int i=0;i<NUM_MAX_P;i++){
+        do{
+            cout << "Add a Posição do Porta Aviões"<< endl;
+            //p = digitarPos();
+            cout << "Add a direção do Porta Aviões"<< endl;
+            cin >> dir;
+            if(!(dir == 'H' || dir == 'h' || dir == 'V' ||dir == 'v')){
+                cout << "Direcao invalida";
+                continue;
+            }
+            if(isLivre(p)){
+                navios.push_back(new Porta_Avioes(p,dir));
+            }else
+                cout << "não é possivel add nessa posição" << endl;
+        }while(isLivre(p));
+    }
+    for (int i=0;i<NUM_MAX_C;i++){
+        do{
+            cout << "Add a Posição do Cruzador"<< endl;
+            //p = digitarPos();
+            cout << "Add a direção do Cruzador"<< endl;
+            cin >> dir;
+            if(!(dir == 'H' || dir == 'h' || dir == 'V' ||dir == 'v')){
+                cout << "Direcao invalida";
+                continue;
+            }
+            if(isLivre(p)){
+                navios.push_back(new Cruzador(p,dir));
+            }else
+                cout << "não é possivel add nessa posição" << endl;
+        }while(isLivre(p));
+    }
+    for (int i=0;i<NUM_MAX_D;i++){
+        do{
+            cout << "Add a Posição do Destroyer"<< endl;
+            //p = digitarPos();
+            cout << "Add a direção do Destroyer"<< endl;
+            cin >> dir;
+            if(!(dir == 'H' || dir == 'h' || dir == 'V' ||dir == 'v')){
+                cout << "Direcao invalida";
+                continue;
+            }
+            if(isLivre(p)){
+                navios.push_back(new Destroyer(p,dir));
+            }else
+                cout << "não é possivel add nessa posição" << endl;
+        }while(isLivre(p));
+    }
+    for (int i=0;i<NUM_MAX_S;i++){
+        do{
+            cout << "Add a Posição do Submarino"<< endl;
+            //p = digitarPos();
+            cout << "Add a direção do Submarino"<< endl;
+            cin >> dir;
+            if(!(dir == 'H' || dir == 'h' || dir == 'V' ||dir == 'v')){
+                cout << "Direcao invalida";
+                continue;
+            }
+            if(isLivre(p)){
+                navios.push_back(new Cruzador(p,dir));
+            }else
+                cout << "não é possivel add nessa posição" << endl;
+        }while(isLivre(p));
+    }
 }
