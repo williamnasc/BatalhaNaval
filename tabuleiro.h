@@ -37,7 +37,7 @@ public:
 
     bool isLivre(Pos p);        //checa se é possivel colocar um navio nessa posição
     bool ler(istream &I);       //ler de arquivo
-    bool digitar(istream &I);   //ler do usuario
+    bool digitar();   //ler do usuario
 
 
 };
