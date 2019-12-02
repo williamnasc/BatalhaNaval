@@ -15,7 +15,11 @@ Pos::Pos(string &s){
             }
             for(int i = 0; i < 10; i++){
                 if(c[1] == 48+i){
-                    col = i;
+                    if(c[1]==48){
+                        col = 9;
+                        break;
+                    }
+                    col = i-1;
                     break;
                 }
             }
@@ -29,7 +33,11 @@ Pos::Pos(string &s){
             }
             for(int i = 0; i < 10; i++){
                 if(c[1] == 48+i){
-                    col = i;
+                    if(c[1]==48){
+                        col = 9;
+                        break;
+                    }
+                    col = i-1;
                     break;
                 }
             }
@@ -47,8 +55,12 @@ Pos::Pos(char l, char c){
             }
         for(int i = 0; i < 10; i++){
             if(c == 48+i){
-                col = i;
-                break;
+                if(c==48){
+                        col = 9;
+                        break;
+                    }
+                    col = i-1;
+                    break;
             }
         }
     }
@@ -61,7 +73,11 @@ Pos::Pos(char l, char c){
             }
             for(int i = 0; i < 10; i++){
                 if(c == 48+i){
-                    col = i;
+                    if(c==48){
+                        col = 9;
+                        break;
+                    }
+                    col = i-1;
                     break;
                 }
             }
@@ -127,10 +143,24 @@ Pos Pos::nextHorizontalEsquerda(){
 
 Pos Pos::digitarPos(){
     char l, c;
-    cout << "Digite a linha[A-B ou a-b]: ";
-    cin >> l;
-    cout << "Digite a coluna[0-9]: ";
-    cin >> c;
+    bool l_valido = false;
+    bool c_valido = false;
+    do{
+        cout << "Digite a linha[A-B ou a-b]: ";
+        cin >> l;
+        if((l >= 65 && l <= 74) || (l >= 97 && l <= 106)){
+            l_valido = true;
+        }
+    }while(l_valido);
+
+    do{
+        cout << "Digite a coluna[1-0]: ";
+        cin >> c;
+        if(c >= 48 && c <= 57){
+            c_valido = true;
+        }
+    }while(c_valido);
+
     Pos novo(l, c);
     return novo;
 }
