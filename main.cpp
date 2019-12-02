@@ -14,7 +14,15 @@ int main()
 
     ifstream a;
     a.open("bn");
-    t.ler(a);
+    if (!a.is_open())
+    {
+      cout << "arq n aberto";
+    }
+    if(t.ler(a))
+        cout << "\ndeu bom\n";
+        else {
+        cout << "\ndeu ruim\n";
+    }
 
     cout << "Hello World!" << endl;
     return 0;

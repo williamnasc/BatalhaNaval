@@ -3,13 +3,31 @@
 
 #include <navio.h>
 
+/// Os possiveis estados de uma posição do mapa
+enum class EstadoPos
+{
+  LIVRE,
+  BLOQUEADA,
+  ATINGIDA,
+  PORTA_AVIAO,
+  CRUZADOR,
+  DESTROYER,
+  SUBMARINO
+};
+
+
 typedef Navio* ptr_Navio;
 
 class Tabuleiro
 {
 private:
     list<ptr_Navio> navios;
-    list<Pos> locMarcados;
+
+    vector<EstadoPos> mapa;
+    int NLin;
+    int Ncol;
+
+
 
 public:
     ///CONSTRUTORES E DESTRUTORES

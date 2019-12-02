@@ -6,6 +6,10 @@
 #include <vector>
 #include <algorithm>
 
+#define NUM_MAX_P 2
+#define NUM_MAX_C 2
+#define NUM_MAX_D 2
+#define NUM_MAX_S 2
 
 class Navio
 {
