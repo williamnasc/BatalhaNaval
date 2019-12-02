@@ -75,7 +75,7 @@ bool Tabuleiro::ler(istream &I){
 
 //falta perceber se ele é grande demais pra ser colocado naquela posição
 //falta alterar o tabuleiro ao add navios
-bool Tabuleiro::digitar(istream &I){
+bool Tabuleiro::digitar(){
     Pos p;
     char dir;
     for (int i=0;i<NUM_MAX_P;i++){
