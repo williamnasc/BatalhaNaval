@@ -32,7 +32,7 @@ public:
     Pos nextVerticalBaixo();
     Pos nextHorizontalDireita();
     Pos nextHorizontalEsquerda();
-
+    Pos digitarPos();
     void operator=(const Pos& p);
     bool operator==(const Pos& p);
 };
