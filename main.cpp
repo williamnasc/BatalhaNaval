@@ -10,8 +10,8 @@ int main()
 {
 
     Tabuleiro t;
-    Porta_Avioes p;
-
+    Porta_Avioes p('h');
+    cout << p.getDir();
     ifstream a;
     a.open("bn");
     if (!a.is_open())

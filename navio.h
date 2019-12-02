@@ -35,8 +35,12 @@ public:
         if(direcao=='v' || direcao=='V' || direcao=='h' || direcao=='H') dir = direcao;
         else  dir = '0';
     }
-    virtual int getSize() const = 0;
+
     virtual inline ~Navio(){}
+
+    virtual int getSize() const = 0;
+    virtual inline char getDir(){return dir;}
+    virtual inline Pos getPos(){return p;}
     //virtual void ler(istream &I)=0;
     //virtual bool isDestruido()=0;
 };

@@ -22,6 +22,7 @@ class Tabuleiro
 {
 private:
     list<ptr_Navio> navios;
+    list<ptr_Navio>::iterator iterador;
     vector<EstadoPos> tab;
     int NLin = 10;
     int Ncol = 10;
@@ -33,7 +34,7 @@ public:
 
     ///METODOS
     void initTab();             //inicia o tabuleiro com todas as posições livres
-    void attTab();              //atualiza o tabuleiro depois de adicionados os respectivos navios
+    bool addToTab(Navio &Nav);              //atualiza o tabuleiro depois de adicionados os respectivos navios
 
     bool isLivre(Pos p);        //checa se é possivel colocar um navio nessa posição
     bool ler(istream &I);       //ler de arquivo

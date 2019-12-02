@@ -8,12 +8,40 @@ void Tabuleiro::initTab(){
     }
 }
 
+bool Tabuleiro::addToTab(Navio &nav){
+    ///checar se o espaço é possivel e esta livre
+    for (int i=0;i<nav.getSize();i++){
+        if(nav.getDir() =='h'|| nav.getDir() =='H'){
+            //checa se a posição é valida
+            if(!Pos(nav.getPos().lin , nav.getPos().col+i).isValid())
+                return false;
+            //checa se a posição está livre
+            if(!isLivre(Pos(nav.getPos().lin , nav.getPos().col+i)))
+                return false;
+        }
+        if(nav.getDir() =='v'|| nav.getDir() =='V'){
+            //checa se a posição é valida
+            if(!Pos(nav.getPos().lin+i , nav.getPos().col).isValid())
+                return false;
+            //checa se a posição está livre
+            if(!isLivre(Pos(nav.getPos().lin+i , nav.getPos().col)))
+                return false;
+        }
+    }
+    //se chegar aqui é pq todos as posições estão livres
+    // add o navio ao Tab (altera o estado das posições)
+    /*for (int i=0;;;) {
+
+    }*/
+}
+
 bool Tabuleiro::isLivre(Pos p){
     if(tab[10*p.lin+p.col] == EstadoPos::LIVRE)
         return true;
     else
         return false;
 }
+
 
 
 //apenas adiciona no conteiner,
