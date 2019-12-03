@@ -12,13 +12,12 @@ private:
     list<ptr_Navio> navios;
     list<ptr_Navio>::iterator iterador;
 
-    vector<Pos> tirosEmitidos;
-    vector<Pos> tirosRecebidos;
-
     int NLin = 10;
     int Ncol = 10;
 public:
     vector<EstadoPos> tab;
+    vector<Pos> tirosEmitidos;
+    vector<Pos> tirosRecebidos;
 
     ///CONSTRUTORES E DESTRUTORES
     inline Tabuleiro(){}

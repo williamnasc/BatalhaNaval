@@ -1,17 +1,7 @@
 #include "batalhanaval.h"
 
-BatalhaNaval::BatalhaNaval(string m):modo(m){}
 
 BatalhaNaval::~BatalhaNaval(){
-
-    // Desliga os sockets
-    cout << "Encerrando o socket de conexoes\n";
-    c.close();
-    cout << "Encerrando o socket de comunicacao\n";
-    s.close();
-
-    /// Encerramento da biblioteca de sockets
-    mysocket::end();
 }
 
 

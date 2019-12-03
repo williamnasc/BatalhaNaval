@@ -11,19 +11,13 @@
 class BatalhaNaval
 {
 private:
-    Tabuleiro meuTabuleiro;
-    Tabuleiro tabInimigo;
-    string modo;                //indica se está no modo cliente ou servido
-
-    ///variaveis de uso da conexão
-    mysocket_status iResult;
-    tcp_mysocket_server c;
-    tcp_mysocket s;
 
 public:
+    Tabuleiro meuTabuleiro;
+    Tabuleiro tabInimigo;
+
     ///CONSTRUTORES
     inline BatalhaNaval(){}
-    BatalhaNaval(string m);//"cliente" ou "servidor"     //inicia ele com cliente ou servidor
     ~BatalhaNaval();
 
     ///METODOS
