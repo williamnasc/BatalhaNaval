@@ -22,10 +22,10 @@ public:
 
     ///METODOS
     void initTabuleiros();    //ler e inicia os tabuleiros
-
-    inline void imprimirTabs(){ cout << "MEU TABULEIRO:\n "<< meuTabuleiro << endl  << "TABULEIRO INIMIGO:\n " << tabInimigo;}
-
-    bool Conect();          //inicia a conexão a depender do modo
+    inline void imprimirTabs(){
+        cout << "MEU TABULEIRO:\n "<< meuTabuleiro << endl
+             << "TABULEIRO INIMIGO:\n " << tabInimigo;}
+    bool verificaAcerto(Pos pos);
 
 
 };

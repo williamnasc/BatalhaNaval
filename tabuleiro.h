@@ -31,6 +31,7 @@ public:
     bool ler(istream &I);       //ler de arquivo
     bool digitar();             //ler do usuario
 
+    friend class BatalhaNaval;
 
 };
 

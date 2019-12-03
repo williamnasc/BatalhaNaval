@@ -46,15 +46,15 @@ Pos::Pos(string &s){
 }
 
 Pos::Pos(char l, char c){
-
-    if(((l >= 'A' && l<='J')||(l >= 'a' && l<='j')) && (c >= '0' && c<='9')){ // é valido
-        lin = int(l)-65;
-        if(c == '0') col = 9;
-        else         col = int(c)-49;
-    }else {
-        lin = -1;
-        col = -1;
-    }
+    lin =-1;
+    col =-1;
+    if(l >= 'A' && l <='J')
+        lin = l-65;
+    if(l >= 'a' && l <='j')
+        lin = l-97;
+    if(c == '0') col = 9;
+    if(c >= '1' && c <= '9')
+        col = c-49;
 }
 
 bool Pos::isValid(){
@@ -138,13 +138,6 @@ Pos Pos::digitarPos(){
     return novo;
 }
 
-string Pos::imprimir(){
-    char l;
-    string posicao;
-    l = 65+lin;
-    posicao = l+col;
-    return posicao;
-}
 
 void Pos::operator=(const Pos& p){
     lin = p.lin;

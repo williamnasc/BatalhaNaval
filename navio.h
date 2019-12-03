@@ -50,6 +50,8 @@ public:
     virtual EstadoPos getEstado() = 0;
     //virtual void ler(istream &I)=0;
     //virtual bool isDestruido()=0;
+
+    friend class BatalhaNaval;
 };
 
 class Porta_Avioes: public Navio
