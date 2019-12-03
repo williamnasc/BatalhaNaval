@@ -138,6 +138,14 @@ Pos Pos::digitarPos(){
     return novo;
 }
 
+string Pos::imprimir(){
+    char l;
+    string posicao;
+    l = 65+lin;
+    posicao = l+col;
+    return posicao;
+}
+
 void Pos::operator=(const Pos& p){
     lin = p.lin;
     col = p.col;
