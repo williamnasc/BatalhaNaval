@@ -3,38 +3,53 @@
 void Tabuleiro::initTab(){
     tab.resize(NLin*Ncol);
 
-    for (int i=0;i<NLin*Ncol;i++){
-        tab[i] = EstadoPos::LIVRE;
+    for(int i=0;i<NLin;i++){
+        for (int j=0;j<Ncol;j++) {
+            tab[10*i+j] = EstadoPos::LIVRE;
+        }
     }
 }
 
-bool Tabuleiro::addToTab(Navio &nav){
+//falta bloquear as casas laterais como nas especificações
+bool Tabuleiro::addToTab(ptr_Navio nav){
     ///checar se o espaço é possivel e esta livre
-    for (int i=0;i<nav.getSize();i++){
-        if(nav.getDir() =='h'|| nav.getDir() =='H'){
+    for (int i=0;i<nav->getSize();i++){
+        if(nav->getDir() =='h'|| nav->getDir() =='H'){
             //checa se a posição é valida
-            if(!Pos(nav.getPos().lin , nav.getPos().col+i).isValid())
+            if(!Pos(nav->getPos().lin , nav->getPos().col+i).isValid())
                 return false;
             //checa se a posição está livre
-            if(!isLivre(Pos(nav.getPos().lin , nav.getPos().col+i)))
+            if(!isLivre(Pos(nav->getPos().lin , nav->getPos().col+i)))
                 return false;
         }
-        if(nav.getDir() =='v'|| nav.getDir() =='V'){
+        if(nav->getDir() =='v'|| nav->getDir() =='V'){
             //checa se a posição é valida
-            if(!Pos(nav.getPos().lin+i , nav.getPos().col).isValid())
+            if(!Pos(nav->getPos().lin+i , nav->getPos().col).isValid())
                 return false;
             //checa se a posição está livre
-            if(!isLivre(Pos(nav.getPos().lin+i , nav.getPos().col)))
+            if(!isLivre(Pos(nav->getPos().lin+i , nav->getPos().col)))
                 return false;
         }
     }
     //se chegar aqui é pq todos as posições estão livres
     // add o navio ao Tab (altera o estado das posições)
-    for (int i=0;i<nav.getSize();i++){
-        if(nav.getDir() =='h'|| nav.getDir() =='H')
-            tab[10*(nav.getPos().lin)+(nav.getPos().col+i)] = nav.getEstado();
-        if(nav.getDir() =='v'|| nav.getDir() =='V')
-            tab[10*(nav.getPos().lin+i)+(nav.getPos().col)] = nav.getEstado();
+    for (int i=0;i<nav->getSize();i++){
+        if(nav->getDir() =='h'|| nav->getDir() =='H'){
+            //marca com o respectivo navio
+            tab[10*(nav->getPos().lin)+(nav->getPos().col+i)] = nav->getEstado();
+
+            //bloqueia as leterais
+            //...
+
+        }
+        if(nav->getDir() =='v'|| nav->getDir() =='V'){
+            //marca com o respectivo navio
+            tab[10*(nav->getPos().lin+i)+(nav->getPos().col)] = nav->getEstado();
+
+            //bloqueia as leterais
+            //...
+        }
+
     }
 }
 
@@ -46,133 +61,52 @@ bool Tabuleiro::isLivre(Pos p){
 }
 
 
-
-//apenas adiciona no conteiner,
 //falta tratar os erros e especificações do projeto
-//falta alterar o tabuleiro ao add navios
 //bug se o numero de navios do navio diferente do numero maximo de navios
-//TODO ERRADO!!!!!!!!!!!
 bool Tabuleiro::ler(istream &I){
     string s;
     Pos p;
-    char lin,col,tipo,dir;
+    char c,lin,col,tipo,dir;
     int Num_P = 0, Num_C = 0, Num_D = 0, Num_S = 0;
 
     I >> s;
     //cout << s;
     if(s != "BATALHA_NAVAL") return false;
 
-    for (int i=0;i<(NUM_MAX_P+NUM_MAX_C+NUM_MAX_D+NUM_MAX_S);i++) {
 
+    for (int i=0;i<(NUM_MAX_P+NUM_MAX_C+NUM_MAX_D+NUM_MAX_S);i++){
         I >> tipo;
         I >> dir;
-        cout << tipo << dir<< endl;
-
-        //se dir for valida
-        if(!(dir == 'H' || dir == 'h' || dir == 'V' ||dir == 'v')) return false;
-
-        //se pos for valida
-        I >> lin;
-        I >> col;
-
+        I >> lin >> col;
+        //cout << "AQUI!!!!";
         p = Pos(lin,col);
-
         if(!p.isValid()) return false;
+        if(!(dir == 'H' || dir == 'h' || dir == 'V' || dir == 'v')) return false;
 
-        if(tipo == 'P' || tipo == 'p'){
-            navios.push_back(new Porta_Avioes(p,dir));
-            Num_P ++;
-            continue;
-        }
-        if(tipo == 'C' || tipo == 'c'){
-            navios.push_back(new Cruzador(p,dir));
-            Num_C ++;
-            continue;
-        }
-        if(tipo == 'D' || tipo == 'd'){
-            navios.push_back(new Destroyer(p,dir));
-            Num_D ++;
-            continue;
-        }
-        if(tipo == 'S' || tipo == 's'){
-            navios.push_back(new Submarino(p,dir));
-            Num_S ++;
-            continue;
-        }
-        //organizar esse final
-        cout << "SE CHEGOU AQUI O TIPO É INVALIDO!" << endl;
-        return false;
+        //add navio a lista de navios
+        if(tipo == 'P' || tipo == 'p')
+            navios.push_back(new Porta_Avioes());
+        if(tipo == 'C' || tipo == 'c')
+            navios.push_back(new Cruzador());
+        if(tipo == 'D' || tipo == 'd')
+            navios.push_back(new Destroyer());
+        if(tipo == 'S' || tipo == 's')
+            navios.push_back(new Submarino());
+
+        /// add os dados e add ao tabuleiro
+        //cout << tipo <<' '<< dir << " : ";
+        //cout << lin <<' '<< col << endl;
+
+        navios.back()->setPos(p);
+        navios.back()->setDir(dir);
+        addToTab(navios.back()->clone());
     }
+    //cout << navios.size() << endl;
+    /*for (iterador = navios.begin();iterador != navios.end();iterador++) {
+        cout <<"Pos( "<< (*iterador)->getPos().lin << " , " << (*iterador)->getPos().col << " )" <<endl;
+        cout <<"dir: " <<  (*iterador)->getDir() << endl;
+    }*/
     return true;
 }
 
-//falta perceber se ele é grande demais pra ser colocado naquela posição
-//falta alterar o tabuleiro ao add navios
-bool Tabuleiro::digitar(){
-    Pos p;
-    char dir;
-    for (int i=0;i<NUM_MAX_P;i++){
-        do{
-            cout << "Add a Posição do Porta Aviões"<< endl;
-            //p = digitarPos();
-            cout << "Add a direção do Porta Aviões"<< endl;
-            cin >> dir;
-            if(!(dir == 'H' || dir == 'h' || dir == 'V' ||dir == 'v')){
-                cout << "Direcao invalida";
-                continue;
-            }
-            if(isLivre(p)){
-                navios.push_back(new Porta_Avioes(p,dir));
-            }else
-                cout << "não é possivel add nessa posição" << endl;
-        }while(isLivre(p));
-    }
-    for (int i=0;i<NUM_MAX_C;i++){
-        do{
-            cout << "Add a Posição do Cruzador"<< endl;
-            //p = digitarPos();
-            cout << "Add a direção do Cruzador"<< endl;
-            cin >> dir;
-            if(!(dir == 'H' || dir == 'h' || dir == 'V' ||dir == 'v')){
-                cout << "Direcao invalida";
-                continue;
-            }
-            if(isLivre(p)){
-                navios.push_back(new Cruzador(p,dir));
-            }else
-                cout << "não é possivel add nessa posição" << endl;
-        }while(isLivre(p));
-    }
-    for (int i=0;i<NUM_MAX_D;i++){
-        do{
-            cout << "Add a Posição do Destroyer"<< endl;
-            //p = digitarPos();
-            cout << "Add a direção do Destroyer"<< endl;
-            cin >> dir;
-            if(!(dir == 'H' || dir == 'h' || dir == 'V' ||dir == 'v')){
-                cout << "Direcao invalida";
-                continue;
-            }
-            if(isLivre(p)){
-                navios.push_back(new Destroyer(p,dir));
-            }else
-                cout << "não é possivel add nessa posição" << endl;
-        }while(isLivre(p));
-    }
-    for (int i=0;i<NUM_MAX_S;i++){
-        do{
-            cout << "Add a Posição do Submarino"<< endl;
-            //p = digitarPos();
-            cout << "Add a direção do Submarino"<< endl;
-            cin >> dir;
-            if(!(dir == 'H' || dir == 'h' || dir == 'V' ||dir == 'v')){
-                cout << "Direcao invalida";
-                continue;
-            }
-            if(isLivre(p)){
-                navios.push_back(new Cruzador(p,dir));
-            }else
-                cout << "não é possivel add nessa posição" << endl;
-        }while(isLivre(p));
-    }
-}
+bool Tabuleiro::digitar(){}

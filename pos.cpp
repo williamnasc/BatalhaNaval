@@ -46,42 +46,15 @@ Pos::Pos(string &s){
 }
 
 Pos::Pos(char l, char c){
-    if((l >= 65 && l <= 74) && (c >= 48 && c <= 57)){
-        for(int i = 0; i < 10; i++){
-                if(l == 65+i){
-                    lin = i;
-                    break;
-                }
-            }
-        for(int i = 0; i < 10; i++){
-            if(c == 48+i){
-                if(c==48){
-                        col = 9;
-                        break;
-                    }
-                    col = i-1;
-                    break;
-            }
-        }
+
+    if(((l >= 'A' && l<='J')||(l >= 'a' && l<='j')) && (c >= '0' && c<='9')){ // é valido
+        lin = int(l)-65;
+        if(c == '0') col = 9;
+        else         col = int(c)-49;
+    }else {
+        lin = -1;
+        col = -1;
     }
-    else if((l >= 97 && l <= 106) && (c >= 48 && c <= 57)){
-            for(int i = 0; i < 10; i++){
-                if(l == 97+i){
-                    lin = i;
-                    break;
-                }
-            }
-            for(int i = 0; i < 10; i++){
-                if(c == 48+i){
-                    if(c==48){
-                        col = 9;
-                        break;
-                    }
-                    col = i-1;
-                    break;
-                }
-            }
-        }
 }
 
 bool Pos::isValid(){
@@ -151,7 +124,7 @@ Pos Pos::digitarPos(){
         if((l >= 65 && l <= 74) || (l >= 97 && l <= 106)){
             l_valido = true;
         }
-    }while(l_valido);
+    }while(l_valido != true);
 
     do{
         cout << "Digite a coluna[1-0]: ";
@@ -159,7 +132,7 @@ Pos Pos::digitarPos(){
         if(c >= 48 && c <= 57){
             c_valido = true;
         }
-    }while(c_valido);
+    }while(c_valido != true);
 
     Pos novo(l, c);
     return novo;

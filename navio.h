@@ -11,6 +11,9 @@
 #define NUM_MAX_D 2
 #define NUM_MAX_S 2
 
+class Navio;
+typedef Navio* ptr_Navio;
+
 class Navio
 {
 protected:
@@ -37,7 +40,10 @@ public:
     }
 
     virtual inline ~Navio(){}
+    virtual ptr_Navio clone() const = 0;
 
+    virtual inline void setPos(Pos pos){p = pos;}
+    virtual inline void setDir(char d){dir = d;}
     virtual int getSize() const = 0;
     virtual inline char getDir(){return dir;}
     virtual inline Pos getPos(){return p;}
@@ -55,6 +61,7 @@ public:
     inline Porta_Avioes(unsigned tiros):Navio(tiros){}
     inline Porta_Avioes(const Pos &ponto, char direcao):Navio(ponto,direcao){}
 
+    inline ptr_Navio clone() const {return new Porta_Avioes(*this);}
     virtual inline EstadoPos getEstado(){return EstadoPos::PORTA_AVIAO;}
     inline int getSize() const {return 5;}
     inline bool isDestruido() {if(tiros_levados == 5) return true; else return false;}
@@ -69,6 +76,7 @@ public:
     inline Cruzador(unsigned tiros):Navio(tiros){}
     inline Cruzador(const Pos &ponto, char direcao):Navio(ponto,direcao){}
 
+    inline ptr_Navio clone() const {return new Cruzador(*this);}
     virtual inline EstadoPos getEstado(){return EstadoPos::CRUZADOR;}
     inline int getSize() const {return 4;}
     inline bool isDestruido() {if(tiros_levados == 4) return true; else return false;}
@@ -83,6 +91,7 @@ public:
     inline Destroyer(unsigned tiros):Navio(tiros){}
     inline Destroyer(const Pos &ponto, char direcao):Navio(ponto,direcao){}
 
+    inline ptr_Navio clone() const {return new Destroyer(*this);}
     virtual inline EstadoPos getEstado(){return EstadoPos::DESTROYER;}
     inline int getSize() const {return 3;}
     inline bool isDestruido() {if(tiros_levados == 3) return true; else return false;}
@@ -97,6 +106,7 @@ public:
     inline Submarino(unsigned tiros):Navio(tiros){}
     inline Submarino(const Pos &ponto, char direcao):Navio(ponto,direcao){}
 
+    inline ptr_Navio clone() const {return new Submarino(*this);}
     virtual inline EstadoPos getEstado(){return EstadoPos::SUBMARINO;}
     inline int getSize() const {return 2;}
     inline bool isDestruido() {if(tiros_levados == 2) return true; else return false;}
