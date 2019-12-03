@@ -1,23 +1,6 @@
 #include "batalhanaval.h"
 
-BatalhaNaval::BatalhaNaval(string m):modo(m){
-
-    // Inicializa a biblioteca de sockets (exigida no Windows)
-    iResult = mysocket::init();
-    if (iResult != mysocket_status::SOCK_OK) {
-      cerr << "Biblioteca mysocket nao pode ser inicializada\n";
-      exit(1);
-    }
-
-    if(modo == "servidor"){
-        cout << "SERVIDOR INICIADO!";
-    }
-    if(modo == "cliente"){
-        cout << "CLIENTE INICIADO!";
-    }
-    if(modo != "servidor" && modo == "cliente" )
-        cerr << "MODO INVALIDO!";
-}
+BatalhaNaval::BatalhaNaval(string m):modo(m){}
 
 BatalhaNaval::~BatalhaNaval(){
 
@@ -53,4 +36,3 @@ void BatalhaNaval::initTabuleiros(){
 
 }
 
-bool BatalhaNaval::Conect(){}
