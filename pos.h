@@ -47,6 +47,7 @@ public:
     Pos nextHorizontalDireita();
     Pos nextHorizontalEsquerda();
     Pos digitarPos();
+    string imprimir();
     void operator=(const Pos& p);
     bool operator==(const Pos& p);
 };

@@ -152,5 +152,11 @@ bool Pos::operator==(const Pos& p){
     }
 }
 
-
+string Pos::imprimir(){
+    string s;
+    s += char(lin+65);
+    if(col == 9) s += char(48);
+    else s += char(col+49);
+    return s;
+}
 

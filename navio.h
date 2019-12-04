@@ -47,9 +47,10 @@ public:
     virtual int getSize() const = 0;
     virtual inline char getDir(){return dir;}
     virtual inline Pos getPos(){return p;}
+    virtual char getTipo() = 0;
     virtual EstadoPos getEstado() = 0;
     //virtual void ler(istream &I)=0;
-    //virtual bool isDestruido()=0;
+    virtual bool isDestruido()=0;
 
     friend class BatalhaNaval;
 };
@@ -64,6 +65,7 @@ public:
     inline Porta_Avioes(const Pos &ponto, char direcao):Navio(ponto,direcao){}
 
     inline ptr_Navio clone() const {return new Porta_Avioes(*this);}
+    inline char getTipo(){return 'P';}
     virtual inline EstadoPos getEstado(){return EstadoPos::PORTA_AVIAO;}
     inline int getSize() const {return 5;}
     inline bool isDestruido() {if(tiros_levados == 5) return true; else return false;}
@@ -79,6 +81,7 @@ public:
     inline Cruzador(const Pos &ponto, char direcao):Navio(ponto,direcao){}
 
     inline ptr_Navio clone() const {return new Cruzador(*this);}
+    inline char getTipo(){return 'C';}
     virtual inline EstadoPos getEstado(){return EstadoPos::CRUZADOR;}
     inline int getSize() const {return 4;}
     inline bool isDestruido() {if(tiros_levados == 4) return true; else return false;}
@@ -94,6 +97,7 @@ public:
     inline Destroyer(const Pos &ponto, char direcao):Navio(ponto,direcao){}
 
     inline ptr_Navio clone() const {return new Destroyer(*this);}
+    inline char getTipo(){return 'D';}
     virtual inline EstadoPos getEstado(){return EstadoPos::DESTROYER;}
     inline int getSize() const {return 3;}
     inline bool isDestruido() {if(tiros_levados == 3) return true; else return false;}
@@ -109,6 +113,7 @@ public:
     inline Submarino(const Pos &ponto, char direcao):Navio(ponto,direcao){}
 
     inline ptr_Navio clone() const {return new Submarino(*this);}
+    inline char getTipo(){return 'S';}
     virtual inline EstadoPos getEstado(){return EstadoPos::SUBMARINO;}
     inline int getSize() const {return 2;}
     inline bool isDestruido() {if(tiros_levados == 2) return true; else return false;}

@@ -14,6 +14,7 @@ void Tabuleiro::initTab(){
 bool Tabuleiro::addToTab(ptr_Navio nav){
     ///checar se o espaço é possivel e esta livre
     for (int i=0;i<nav->getSize();i++){
+
         if(nav->getDir() =='h'|| nav->getDir() =='H'){
             //checa se a posição é valida
             if(!Pos(nav->getPos().lin , nav->getPos().col+i).isValid())

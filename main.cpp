@@ -1,8 +1,7 @@
 #include <iostream>
-#include <pos.h>
-#include <navio.h>
-#include <tabuleiro.h>
 #include <fstream>
+#include <stdlib.h>
+#include <time.h>
 #include <batalhanaval.h>
 
 using namespace std;
@@ -11,11 +10,15 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
+    srand(time(NULL));
 
-    Pos pos;
+    Pos pos,posAnt;
     int controle;
-    char respostaTiro;
-    bool cliente =false, servidor=false;
+    char respostaTiro = 'i';
+    char tipoNav;
+    bool cliente =false, servidor=false,
+         jManual = false, jAutomatico = false,
+         jogRepetida = false;
     BatalhaNaval jogo;
 
 
@@ -63,6 +66,10 @@ int main(int argc, char **argv)
         cout << "2 - AUTOMATICA" << endl;
         cin >> controle;
     }while(controle != 1 && controle != 2);
+    if(controle == 1)
+        jManual = true;
+    if(controle == 2)
+        jAutomatico = true;
 
 }
 
@@ -120,26 +127,43 @@ int main(int argc, char **argv)
         {
             if(servidor && primeiroTiro){
                 do{
-                    /*
-                       cout << "Mensagem para o oponente [max " << MYSOCKET_TAM_MAX_STRING << " caracteres, FIM para terminar]: ";
-                       cin >> ws;
-                       getline(cin,msg);
-                    */
                     ///PRIMEIRO TIRO
-                    ///ler a posição do tiro, até que ela seja valida e possivel
-                    do{
-                        cout << "digite a posição da primeira jogada: ";
-                        getline(cin,msg);
-                        pos = Pos(char(msg[0]),char(msg[1]));
-                        cout << msg[0] << msg[1];
-                    }while((msg.size() != 2) && pos.isValid());
 
-                    ///add tiro aos tiros emitidos
-                    jogo.meuTabuleiro.tirosEmitidos.push_back(pos);
-                    cout << "   enviado";
+                    /// MANUALMENTE
+                    if(jManual){
+                        ///ler a posição do tiro, até que ela seja valida e possivel
+                        do{
+                            jogRepetida = false;
 
-                   } while (msg.size()==0 || msg.size()>MYSOCKET_TAM_MAX_STRING);
+                            cout << "digite a posição da primeira jogada: ";
+                            cin >> ws;
+                            getline(cin,msg);
+                            pos = Pos(char(msg[0]),char(msg[1]));
+                            cout << msg[0] << msg[1];
+
+                        }while(!jogo.isValid(pos)/*(msg.size() != 2) && false*/);
+
+                    }
+
+                    /// AUTOMATICO
+                    if(jAutomatico){
+                        do{
+                            jogRepetida = false;
+
+                            // posição aleatoria
+                            pos.lin = int(rand() % 10);
+                            pos.col = int (rand() % 10);
+                            msg = pos.imprimir();
+
+                        }while(!jogo.isValid(pos)/*(msg.size() != 2) && false*/);
+                    }
+
+                } while (msg.size()==0 || msg.size()>MYSOCKET_TAM_MAX_STRING);
                      if (!fim) fim = (msg=="FIM");
+                    ///ENVIADO
+                     ///add tiro aos tiros emitidos
+                     jogo.meuTabuleiro.tirosEmitidos.push_back(10*pos.lin+pos.col);
+                     cout << "   enviado";
 
                      iResult = s.write_string(msg);
                      if ( iResult == mysocket_status::SOCK_ERROR )
@@ -163,6 +187,10 @@ int main(int argc, char **argv)
             if (iResult==mysocket_status::SOCK_DISCONNECTED)
             {
               cout << "Oponente desconectou\n";
+              cout << "GANHEI!!!!!!!!!!!!!!!!!!!!!" <<endl;
+              cout << "ACABOU O JOGO:\n";
+              cout << "placar: pontos do OPONENTE: " << jogo.getPontosInimigo()<<endl;
+              cout << "placar: MEUS pontos       : " << jogo.getMeusPontos()<<endl;
               s.close();
               fim = true;
             }
@@ -174,42 +202,102 @@ int main(int argc, char **argv)
           else
           {///MENSAGEM RECEBIDA
 
- /*           cout << "Mensagem recebida do oponente: " << msg << endl;
-            if (msg == "FIM")
+ //           cout << "Mensagem recebida do oponente: " << msg << endl;
+            if (jogo.verificaFim())
             {
-              cout << "Oponente encerrou\n";
+              cout << "ACABOU O JOGO:\n";
+              cout << "placar: pontos do OPONENTE: " << jogo.getPontosInimigo()<<endl;
+              cout << "placar: MEUS pontos       : " << jogo.getMeusPontos()<<endl;
               s.close();
               fim = true;
-            }*/
+              break;
+            }
+              ///MENSAGEM DO OPONENTE
               cout << "Mensagem recebida do oponente: " << msg << endl;
-              cout <<msg[0] <<endl<<msg[1] <<endl<<msg[2] <<endl;
+              //cout <<msg[0] << endl << msg[1] << endl << msg[2] << endl;
+
+              ///MEU TIRO ANTERIOR
+
+              posAnt = pos;
+
+              ///pega o resultado do tiro anterior
+              respostaTiro = msg[2];
+              cout << "resposta do meu Tiro anterior: " << respostaTiro << endl;
+              ///trata o resultado do tiro anterior e escreve no tab inimigo
+              if(respostaTiro == '#'){
+                jogo.tabInimigo.tab[10*(posAnt.lin)+posAnt.col] = EstadoPos::ATINGIDA;
+                ///add aos acertos
+                jogo.meuTabuleiro.acertos.push_back(posAnt);
+              }
+              if(respostaTiro == 'X' || respostaTiro == 'x')
+                  jogo.tabInimigo.tab[10*(posAnt.lin)+posAnt.col] = EstadoPos::BLOQUEADA;
+
+              if(respostaTiro == 'P' || respostaTiro == 'p'){
+                  //addDestruidoToTab(respostaTiro,posAnt)
+                  jogo.tabInimigo.tab[10*(posAnt.lin)+posAnt.col] = EstadoPos::PORTA_AVIAO;
+                  jogo.addPonto(respostaTiro);
+              }
+              if(respostaTiro == 'C' || respostaTiro == 'c'){
+                  jogo.tabInimigo.tab[10*(posAnt.lin)+posAnt.col] = EstadoPos::CRUZADOR;
+                  jogo.addPonto(respostaTiro);
+              }
+              if(respostaTiro == 'D' || respostaTiro == 'd'){
+                  jogo.tabInimigo.tab[10*(posAnt.lin)+posAnt.col] = EstadoPos::DESTROYER;
+                  jogo.addPonto(respostaTiro);
+              }
+              if(respostaTiro == 'S' || respostaTiro == 's'){
+                  jogo.tabInimigo.tab[10*(posAnt.lin)+posAnt.col] = EstadoPos::SUBMARINO;
+                  jogo.addPonto(respostaTiro);
+              }
+
+
+              ///TIRO RECEBIDO ATUAL
+              ///
+              ///pega posicao recebida do tiro
               pos = Pos(char(msg[0]),char(msg[1]));
+              cout << "tiro que chegou aqui: "<<pos.imprimir() <<" = l: "<<pos.lin<<";c: "<<pos.col <<endl;
+              ///testa se o tiro é valido
               if(Pos(char(msg[0]),char(msg[1])).isValid()){
-                    /*se o tiro é valido
-                     *add atiros recebidos
-                     *alterar estado do tab
-                     * chegar se acertou alguem
-                     * pintar o tab do adversario
-                     * pintar quando errou
-                     *
-                     * */
+
                   //add a tiros recebidos
                   jogo.meuTabuleiro.tirosRecebidos.push_back(pos);
 
                   //saber se acertou alguma coisa
                   if(jogo.verificaAcerto(pos)){
-                      cout << "CERTOU!!!!!!"<<endl;
-                      //jogo.verificaDestruido()
-
+                      cout << "O TIRO DELE TE ACERTOU!!!!!!"<<endl;
                       respostaTiro = '#';
+                      jogo.meuTabuleiro.tab[10*(pos.lin)+pos.col] = EstadoPos::ATINGIDA;
+
+                      //verifica se destruiu algum navio
+                      if(jogo.verificaDestruido(tipoNav)){
+                            cout << "MEU "<<tipoNav<<" FOI DESTRUIDO" << endl;
+                            respostaTiro = tipoNav;
+
+                            //verifica se todos os meus navios foram destrudios -> acabou o jogo
+                            if(jogo.verificaFim()){
+                                cout << "PERDI!!!!!!!!!!!!!!!!!!!!!" <<endl;
+                                cout << "ACABOU O JOGO:\n";
+                                cout << "placar: pontos do OPONENTE: " << jogo.getPontosInimigo() <<endl;
+                                cout << "placar: MEUS pontos       : " << jogo.getMeusPontos()<< endl;
+                                s.close();
+                                fim = true;
+                                break;
+                            }
+
+                      }
+
                       //alterar no tabuleiro
                       jogo.meuTabuleiro.tab[10*(pos.lin)+pos.col] = EstadoPos::ATINGIDA;
                   }else{
-                      cout << "ERROU!!!!!!"<<endl;
+                      cout << "O TIRO DELE ERROU!!!!!!"<<endl;
                       respostaTiro = 'X';
+                      jogo.meuTabuleiro.tab[10*(pos.lin)+pos.col] = EstadoPos::BLOQUEADA;
+
 
                   }
-              jogo.imprimirTabs();
+                    ///imprime os tabuleiros atualizados
+                    jogo.imprimirTabs();
+              ///tiro n é valido
               }else{
                     cout << "ESSA POSICAO NÃO É VALIDA!!1";
                     respostaTiro = 'i';
@@ -224,20 +312,47 @@ int main(int argc, char **argv)
             cin >> ws;
             getline(cin,msg);
                 */
-              ///ler a posição do tiro, até que ela seja valida e possivel
-              do{
-                  cout << "digite a posição da jogada: ";
-                  getline(cin,msg);
-                  pos = Pos(char(msg[0]),char(msg[1]));
-                  cout << msg[0] << msg[1];
-              }while((msg.size() != 2) && pos.isValid());
-                msg[2] = respostaTiro;
-              ///add tiro aos tiros emitidos
-              jogo.meuTabuleiro.tirosEmitidos.push_back(pos);
-              cout << "   enviado";
+              ///RESPOSTA
+
+                /// MANUAL
+              if(jManual){
+                  ///ler a posição do tiro, até que ela seja valida e possivel
+                  do{
+
+                      jogRepetida = false;
+
+                      cout << "digite a posição da primeira jogada: ";
+                      cin >> ws;
+                      getline(cin,msg);
+                      pos = Pos(char(msg[0]),char(msg[1]));
+                      cout << msg[0] << msg[1];
+
+                  }while(!jogo.isValid(pos)/*(msg.size() != 2) && false*/);
+              }
+
+              ///AUTOMATICA
+              if(jAutomatico){
+                  do{
+
+                      jogRepetida = false;
+                      // posição aleatoria
+                      pos.lin = int(rand() % 10);
+                      pos.col = int (rand() % 10);
+                      msg = pos.imprimir();
+                      cout << pos.imprimir() << endl;
+
+                  }while(!jogo.isValid(pos));
+
+              }
+             //ADICIONA O RESULTADO DO TIRO ANTERIO A MENSAGEM
+              msg += respostaTiro;
 
           } while (msg.size()==0 || msg.size()>MYSOCKET_TAM_MAX_STRING);
+
           if (!fim) fim = (msg=="FIM");
+          ///add tiro aos tiros emitidos
+          jogo.meuTabuleiro.tirosEmitidos.push_back(10*pos.lin+pos.col);
+          //cout << "   enviado";
 
           iResult = s.write_string(msg);
           if ( iResult == mysocket_status::SOCK_ERROR )

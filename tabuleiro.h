@@ -16,7 +16,8 @@ private:
     int Ncol = 10;
 public:
     vector<EstadoPos> tab;
-    vector<Pos> tirosEmitidos;
+    vector<int> tirosEmitidos;
+    vector<Pos> acertos;
     vector<Pos> tirosRecebidos;
 
     ///CONSTRUTORES E DESTRUTORES
@@ -46,7 +47,7 @@ inline ostream &operator<<(ostream &O, const Tabuleiro &X){
         for(unsigned j = 0; j < 10; j++){
             if(X.tab[(10*i+j)] == EstadoPos::LIVRE) cout << '-';
             if(X.tab[(10*i+j)] == EstadoPos::BLOQUEADA) cout << 'X';
-            if(X.tab[(10*i+j)] == EstadoPos::ATINGIDA) cout << '*';
+            if(X.tab[(10*i+j)] == EstadoPos::ATINGIDA) cout << '#';
             if(X.tab[(10*i+j)] == EstadoPos::PORTA_AVIAO) cout << 'P';
             if(X.tab[(10*i+j)] == EstadoPos::CRUZADOR) cout << 'C';
             if(X.tab[(10*i+j)] == EstadoPos::DESTROYER) cout << 'D';
