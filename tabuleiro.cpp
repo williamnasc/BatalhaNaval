@@ -109,4 +109,124 @@ bool Tabuleiro::ler(istream &I){
     return true;
 }
 
-bool Tabuleiro::digitar(){}
+bool Tabuleiro::digitar(){
+    Pos p;
+    char li, co, tipo, direcao;
+    for(unsigned i = 0; i <(NUM_MAX_P+NUM_MAX_C+NUM_MAX_D+NUM_MAX_S); i++){
+        do{
+        cout << "QUAL NAVIO? [P, C, D ou S]: ";
+        cin >> tipo;
+        }while(tipo != 'P' && tipo != 'p' && tipo != 'C' && tipo != 'c' && tipo != 'D' && tipo != 'd'
+               && tipo != 'S' && tipo != 's');
+
+        //Porta_Aviao
+        if(tipo == 'P' || tipo == 'p'){
+            cout << "Digite os " << NUM_MAX_P << " Porta_Avioes" << endl;
+            for(unsigned i = 0; i < NUM_MAX_P; i++){
+                do{
+                    cout << "Linha [A-J] ou [a-j]: ";
+                    cin >> li;
+                }while(!(li >= 65 && li <= 74) && !(li >= 97 && li <= 106));
+
+                do{
+                    cout << "Coluna [1-0]: ";
+                    cin >> co;
+                }while(co < 48 || co > 57);
+
+                do{
+                    cout << "Direcao [V ou H] ou [v ou h]: ";
+                    cin >> direcao;
+                }while(direcao != 'V' && direcao != 'v' && direcao != 'H' && direcao != 'h');
+                p = Pos(li, co);
+                navios.push_back(new Porta_Avioes());
+                navios.back()->setPos(p);
+                navios.back()->setDir(direcao);
+                //addToTab(navios.back()->clone());
+                cout << endl << endl;
+            }
+        }
+
+        //Cruzador
+        if(tipo == 'C' || tipo == 'c'){
+            cout << "Digite os " << NUM_MAX_C << " Cruzadores" << endl;
+            for(unsigned i = 0; i < NUM_MAX_C; i++){
+                do{
+                    cout << "Linha [A-J] ou [a-j]: ";
+                    cin >> li;
+                }while(!(li >= 65 && li <= 74) && !(li >= 97 && li <= 106));
+
+                do{
+                    cout << "Coluna [1-0]: ";
+                    cin >> co;
+                }while(co < 48 || co > 57);
+
+                do{
+                    cout << "Direcao [V ou H] ou [v ou h]: ";
+                    cin >> direcao;
+                }while(direcao != 'V' && direcao != 'v' && direcao != 'H' && direcao != 'h');
+                p = Pos(li, co);
+                navios.push_back(new Cruzador());
+                navios.back()->setPos(p);
+                navios.back()->setDir(direcao);
+                //addToTab(navios.back()->clone());
+                cout << endl << endl;
+            }
+        }
+
+        //Destroyer
+        if(tipo == 'D' || tipo == 'd'){
+            cout << "Digite os " << NUM_MAX_D << " Destroyers" << endl;
+            for(unsigned i = 0; i < NUM_MAX_D; i++){
+                do{
+                    cout << "Linha [A-J] ou [a-j]: ";
+                    cin >> li;
+                }while(!(li >= 65 && li <= 74) && !(li >= 97 && li <= 106));
+
+                do{
+                    cout << "Coluna [1-0]: ";
+                    cin >> co;
+                }while(co < 48 || co > 57);
+
+                do{
+                    cout << "Direcao [V ou H] ou [v ou h]: ";
+                    cin >> direcao;
+                }while(direcao != 'V' && direcao != 'v' && direcao != 'H' && direcao != 'h');
+                p = Pos(li, co);
+                navios.push_back(new Destroyer());
+                navios.back()->setPos(p);
+                navios.back()->setDir(direcao);
+                //addToTab(navios.back()->clone());
+                cout << endl << endl;
+            }
+        }
+
+        //Submarino
+        if(tipo == 'S' || tipo == 's'){
+            cout << "Digite os " << NUM_MAX_S << " Cruzadores" << endl;
+            for(unsigned i = 0; i < NUM_MAX_S; i++){
+                do{
+                    cout << "Linha [A-J] ou [a-j]: ";
+                    cin >> li;
+                }while(!(li >= 65 && li <= 74) && !(li >= 97 && li <= 106));
+
+                do{
+                    cout << "Coluna [1-0]: ";
+                    cin >> co;
+                }while(co < 48 || co > 57);
+
+                do{
+                    cout << "Direcao [V ou H] ou [v ou h]: ";
+                    cin >> direcao;
+                }while(direcao != 'V' && direcao != 'v' && direcao != 'H' && direcao != 'h');
+                p = Pos(li, co);
+                navios.push_back(new Submarino());
+                navios.back()->setPos(p);
+                navios.back()->setDir(direcao);
+                //addToTab(navios.back()->clone());
+                cout << endl << endl;
+            }
+        }
+    }
+
+}
+
