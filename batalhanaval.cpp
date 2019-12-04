@@ -73,6 +73,13 @@ bool BatalhaNaval::verificaDestruido(char& tipo){
     return false;
 }
 
+bool BatalhaNaval::verificaFim(){
+    //if(meuTabuleiro.navios.size() == 0) return true;
+    if(meusPontos == (NUM_MAX_P*5+NUM_MAX_C*4+NUM_MAX_D*3+NUM_MAX_S*2))return  true;
+    else return false;
+
+}
+
 void BatalhaNaval::addDestruidoToTab(char tipoNav, Pos pos){
     ptr_Navio navio;
 /*

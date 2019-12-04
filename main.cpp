@@ -187,7 +187,7 @@ int main(int argc, char **argv)
             if (iResult==mysocket_status::SOCK_DISCONNECTED)
             {
               cout << "Oponente desconectou\n";
-              cout << "GANHEI!!!!!!!!!!!!!!!!!!!!!" <<endl;
+              //cout << "GANHEI!!!!!!!!!!!!!!!!!!!!!" <<endl;
               cout << "ACABOU O JOGO:\n";
               cout << "placar: pontos do OPONENTE: " << jogo.getPontosInimigo()<<endl;
               cout << "placar: MEUS pontos       : " << jogo.getMeusPontos()<<endl;
@@ -250,6 +250,15 @@ int main(int argc, char **argv)
                   jogo.addPonto(respostaTiro);
               }
 
+              if(jogo.verificaFim()){
+                  cout << "PELO NOVO METODO!!!!!!!!!!!!!!!!!!!!!" <<endl;
+                  cout << "ACABOU O JOGO:\n";
+                  cout << "placar: pontos do OPONENTE: " << jogo.getPontosInimigo() <<endl;
+                  cout << "placar: MEUS pontos       : " << jogo.getMeusPontos()<< endl;
+                  s.close();
+                  fim = true;
+                  break;
+              }
 
               ///TIRO RECEBIDO ATUAL
               ///
@@ -274,7 +283,7 @@ int main(int argc, char **argv)
                             respostaTiro = tipoNav;
 
                             //verifica se todos os meus navios foram destrudios -> acabou o jogo
-                            if(jogo.verificaFim()){
+                            /*if(jogo.verificaFim()){
                                 cout << "PERDI!!!!!!!!!!!!!!!!!!!!!" <<endl;
                                 cout << "ACABOU O JOGO:\n";
                                 cout << "placar: pontos do OPONENTE: " << jogo.getPontosInimigo() <<endl;
@@ -282,7 +291,7 @@ int main(int argc, char **argv)
                                 s.close();
                                 fim = true;
                                 break;
-                            }
+                            }*/
 
                       }
 
