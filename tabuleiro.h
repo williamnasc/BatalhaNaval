@@ -1,6 +1,8 @@
 #ifndef TABULEIRO_H
 #define TABULEIRO_H
 
+#include <stdlib.h>
+#include <time.h>
 #include "navio.h"
 #include "pos.h"
 
@@ -31,6 +33,7 @@ public:
     bool isLivre(Pos p);        //checa se é possivel colocar um navio nessa posição
     bool ler(istream &I);       //ler de arquivo
     bool digitar();             //ler do usuario
+    void initAuto();
 
     friend class BatalhaNaval;
 
@@ -45,9 +48,10 @@ inline ostream &operator<<(ostream &O, const Tabuleiro &X){
             c1 = c1+1;
         O << char(c1) << "  ";
         for(unsigned j = 0; j < 10; j++){
-            if(X.tab[(10*i+j)] == EstadoPos::LIVRE) cout << '-';
-            if(X.tab[(10*i+j)] == EstadoPos::BLOQUEADA) cout << 'X';
+            if(X.tab[(10*i+j)] == EstadoPos::LIVRE) cout << ' ';
+            if(X.tab[(10*i+j)] == EstadoPos::BLOQUEADA) cout << ' ';
             if(X.tab[(10*i+j)] == EstadoPos::ATINGIDA) cout << '#';
+            if(X.tab[(10*i+j)] == EstadoPos::ERRADA) cout << 'X';
             if(X.tab[(10*i+j)] == EstadoPos::PORTA_AVIAO) cout << 'P';
             if(X.tab[(10*i+j)] == EstadoPos::CRUZADOR) cout << 'C';
             if(X.tab[(10*i+j)] == EstadoPos::DESTROYER) cout << 'D';

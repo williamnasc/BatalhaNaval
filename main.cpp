@@ -57,7 +57,7 @@ int main(int argc, char **argv)
         cin >> controle;
     }while(controle != 1 && controle != 2 && controle != 3);
 
-    jogo.initTabuleiros();
+    jogo.initTabuleiros(controle);
     jogo.imprimirTabs();
 
     do{
@@ -230,7 +230,7 @@ int main(int argc, char **argv)
                 jogo.meuTabuleiro.acertos.push_back(posAnt);
               }
               if(respostaTiro == 'X' || respostaTiro == 'x')
-                  jogo.tabInimigo.tab[10*(posAnt.lin)+posAnt.col] = EstadoPos::BLOQUEADA;
+                  jogo.tabInimigo.tab[10*(posAnt.lin)+posAnt.col] = EstadoPos::ERRADA;
 
               if(respostaTiro == 'P' || respostaTiro == 'p'){
                   //addDestruidoToTab(respostaTiro,posAnt)

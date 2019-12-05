@@ -22,7 +22,7 @@ public:
     ~BatalhaNaval();
 
     ///METODOS
-    void initTabuleiros();    //ler e inicia os tabuleiros
+    void initTabuleiros(int control);    //ler e inicia os tabuleiros
     inline void imprimirTabs(){
         cout << "MEU TABULEIRO:\n "<< meuTabuleiro << endl
              << "TABULEIRO INIMIGO:\n " << tabInimigo;

@@ -7,23 +7,41 @@ BatalhaNaval::~BatalhaNaval(){
 }
 
 
-void BatalhaNaval::initTabuleiros(){
-    meuTabuleiro.initTab();
-    tabInimigo.initTab();
+void BatalhaNaval::initTabuleiros(int control){
     string s;
     ifstream a;
-    cout << "digite o nome do arquivo de leitura:";
-    //cin >> s;
-    a.open("bn");
-    if (!a.is_open())
-    {
-      cout << "arq n aberto";
+
+    meuTabuleiro.initTab();
+    tabInimigo.initTab();
+
+    switch (control) {
+    case 1: // arquivo
+        cout << "digite o nome do arquivo de leitura:";
+        //cin >> s;
+        a.open(/*s*/"bn");
+        if (!a.is_open())
+        {
+          cout << "arq n aberto";
+        }
+        if(meuTabuleiro.ler(a))
+            cout << "\ndeu bom na leitura\n";
+            else {
+            cout << "\ndeu ruim na leitura\n";
+        }
+        break;
+    case 2: // manual
+        //do{}while(meuTabuleiro.digitar());
+        meuTabuleiro.digitar();
+        break;
+    case 3: // automatica
+        meuTabuleiro.initAuto();
+        break;
+    default:
+        break;
     }
-    if(meuTabuleiro.ler(a))
-        cout << "\ndeu bom\n";
-        else {
-        cout << "\ndeu ruim\n";
-    }
+
+
+
 }
 
 bool BatalhaNaval::verificaAcerto(Pos pos){
@@ -74,7 +92,8 @@ bool BatalhaNaval::verificaDestruido(char& tipo){
 }
 
 bool BatalhaNaval::verificaFim(){
-    //if(meuTabuleiro.navios.size() == 0) return true;
+    if(meuTabuleiro.navios.size() == 0) return true;
+
     if(meusPontos == (NUM_MAX_P*5+NUM_MAX_C*4+NUM_MAX_D*3+NUM_MAX_S*2))return  true;
     else return false;
 

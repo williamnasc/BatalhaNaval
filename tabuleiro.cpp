@@ -10,9 +10,9 @@ void Tabuleiro::initTab(){
     }
 }
 
-//falta bloquear as casas laterais como nas especificações
 bool Tabuleiro::addToTab(ptr_Navio nav){
     ///checar se o espaço é possivel e esta livre
+    Pos ant = nav->getPos();
     for (int i=0;i<nav->getSize();i++){
 
         if(nav->getDir() =='h'|| nav->getDir() =='H'){
@@ -30,7 +30,13 @@ bool Tabuleiro::addToTab(ptr_Navio nav){
             //checa se a posição está livre
             if(!isLivre(Pos(nav->getPos().lin+i , nav->getPos().col)))
                 return false;
+            cout << Pos(nav->getPos().lin+i , nav->getPos().col).imprimir() << endl;
+            if(i!=0 && ant == Pos(nav->getPos().lin+i , nav->getPos().col)) return false;
+            ant = Pos(nav->getPos().lin+i , nav->getPos().col);
+
         }
+
+
     }
     //se chegar aqui é pq todos as posições estão livres
     // add o navio ao Tab (altera o estado das posições)
@@ -40,29 +46,33 @@ bool Tabuleiro::addToTab(ptr_Navio nav){
             tab[10*(nav->getPos().lin)+(nav->getPos().col+i)] = nav->getEstado();
 
             //bloqueia as leterais
-           /* bool posicao_valida = false;
-                        if(i == 0){
-                            posicao_valida = Pos(nav->getPos().lin, nav->getPos().col+i-1).isValid();
-                            if(posicao_valida == true) tab[10*(nav->getPos().lin)+(nav->getPos().col+i-1)] = EstadoPos::BLOQUEADA;
-                            posicao_valida = Pos(nav->getPos().lin-1, nav->getPos().col+i).isValid();
-                            if(posicao_valida == true) tab[10*(nav->getPos().lin-1)+(nav->getPos().col+i)] = EstadoPos::BLOQUEADA;
-                            posicao_valida = Pos(nav->getPos().lin+1, nav->getPos().col+i).isValid();
-                            if(posicao_valida == true) tab[10*(nav->getPos().lin+1)+(nav->getPos().col+i)] = EstadoPos::BLOQUEADA;
-                        }
-                        else if(i == nav->getSize()-1){
-                            posicao_valida = Pos(nav->getPos().lin, nav->getPos().col+i+1).isValid();
-                            if(posicao_valida == true) tab[10*(nav->getPos().lin)+(nav->getPos().col+i+1)] = EstadoPos::BLOQUEADA;
-                            posicao_valida = Pos(nav->getPos().lin-1, nav->getPos().col+i).isValid();
-                            if(posicao_valida == true) tab[10*(nav->getPos().lin-1)+(nav->getPos().col+i)] = EstadoPos::BLOQUEADA;
-                            posicao_valida = Pos(nav->getPos().lin+1, nav->getPos().col+i).isValid();
-                            if(posicao_valida == true) tab[10*(nav->getPos().lin+1)+(nav->getPos().col+i)] = EstadoPos::BLOQUEADA;
-                        }
-                        else{
-                            posicao_valida = Pos(nav->getPos().lin-1, nav->getPos().col+i).isValid();
-                            if(posicao_valida == true) tab[10*(nav->getPos().lin-1)+(nav->getPos().col+i)] = EstadoPos::BLOQUEADA;
-                            posicao_valida = Pos(nav->getPos().lin+1, nav->getPos().col+i).isValid();
-                            if(posicao_valida == true) tab[10*(nav->getPos().lin+1)+(nav->getPos().col+i)] = EstadoPos::BLOQUEADA;
-                        }*/
+            //bloqueia lateral de baixo
+            if(Pos(nav->getPos().lin+1,nav->getPos().col+i).isValid()){
+                if(isLivre(Pos(nav->getPos().lin+1,nav->getPos().col+i))){
+                    tab[10*(nav->getPos().lin+1)+(nav->getPos().col+i)] = EstadoPos::BLOQUEADA;
+                }
+            }
+            //bloqueia lateral de cima
+            if(Pos(nav->getPos().lin-1,nav->getPos().col+i).isValid()){
+                if(isLivre(Pos(nav->getPos().lin-1,nav->getPos().col+i))){
+                    tab[10*(nav->getPos().lin-1)+(nav->getPos().col+i)] = EstadoPos::BLOQUEADA;
+                }
+            }
+            if(i==0 || i == (nav->getSize()-1)){
+                //bloqueia lateral da esquerda
+                if(Pos(nav->getPos().lin,(nav->getPos().col+i)-1).isValid()){
+                    if(isLivre(Pos(nav->getPos().lin,(nav->getPos().col+i)-1))){
+                        tab[10*(nav->getPos().lin)+((nav->getPos().col+i)-1)] = EstadoPos::BLOQUEADA;
+                    }
+                }
+                //bloqueia lateral da direita
+                if(Pos(nav->getPos().lin,(nav->getPos().col+i)+1).isValid()){
+                    if(isLivre(Pos(nav->getPos().lin,(nav->getPos().col+i)+1))){
+                        tab[10*(nav->getPos().lin)+((nav->getPos().col+i)+1)] = EstadoPos::BLOQUEADA;
+                    }
+                }
+            }
+
 
         }
         if(nav->getDir() =='v'|| nav->getDir() =='V'){
@@ -70,32 +80,37 @@ bool Tabuleiro::addToTab(ptr_Navio nav){
             tab[10*(nav->getPos().lin+i)+(nav->getPos().col)] = nav->getEstado();
 
             //bloqueia as leterais
-           /* bool posicao_valida = false;
-                        if(i == 0){
-                            posicao_valida = Pos(nav->getPos().lin+i-1, nav->getPos().col).isValid();
-                            if(posicao_valida == true) tab[10*(nav->getPos().lin+i-1)+(nav->getPos().col)] = EstadoPos::BLOQUEADA;
-                            posicao_valida = Pos(nav->getPos().lin+i, nav->getPos().col-1).isValid();
-                            if(posicao_valida == true) tab[10*(nav->getPos().lin+i)+(nav->getPos().col-1)] = EstadoPos::BLOQUEADA;
-                            posicao_valida = Pos(nav->getPos().lin+i, nav->getPos().col+1).isValid();
-                            if(posicao_valida == true) tab[10*(nav->getPos().lin+i)+(nav->getPos().col+1)] = EstadoPos::BLOQUEADA;
-                        }
-                        else if(i == nav->getSize()-1){
-                            posicao_valida = Pos(nav->getPos().lin+i+1, nav->getPos().col).isValid();
-                            if(posicao_valida == true) tab[10*(nav->getPos().lin+i+1)+(nav->getPos().col)] = EstadoPos::BLOQUEADA;
-                            posicao_valida = Pos(nav->getPos().lin+i, nav->getPos().col-1).isValid();
-                            if(posicao_valida == true) tab[10*(nav->getPos().lin+i)+(nav->getPos().col-1)] = EstadoPos::BLOQUEADA;
-                            posicao_valida = Pos(nav->getPos().lin+i, nav->getPos().col+1).isValid();
-                            if(posicao_valida == true) tab[10*(nav->getPos().lin+i)+(nav->getPos().col+1)] = EstadoPos::BLOQUEADA;
-                        }
-                        else{
-                            posicao_valida = Pos(nav->getPos().lin+i, nav->getPos().col-1).isValid();
-                            if(posicao_valida == true) tab[10*(nav->getPos().lin+i)+(nav->getPos().col-1)] = EstadoPos::BLOQUEADA;
-                            posicao_valida = Pos(nav->getPos().lin+i, nav->getPos().col+1).isValid();
-                            if(posicao_valida == true) tab[10*(nav->getPos().lin+i)+(nav->getPos().col+1)] = EstadoPos::BLOQUEADA;
-                        }*/
+
+            //bloqueia lateral da esquerda
+            if(Pos(nav->getPos().lin+i,nav->getPos().col-1).isValid()){
+                if(isLivre(Pos(nav->getPos().lin+i,nav->getPos().col-1))){
+                    tab[10*(nav->getPos().lin+i)+(nav->getPos().col-1)] = EstadoPos::BLOQUEADA;
+                }
+            }
+            //bloqueia lateral da direita
+            if(Pos(nav->getPos().lin+i,nav->getPos().col+1).isValid()){
+                if(isLivre(Pos(nav->getPos().lin+i,nav->getPos().col+1))){
+                    tab[10*(nav->getPos().lin+i)+(nav->getPos().col+1)] = EstadoPos::BLOQUEADA;
+                }
+            }
+            if(i==0 || i == (nav->getSize()-1)){
+                //bloqueia lateral de baixo
+                if(Pos(nav->getPos().lin+i+1,nav->getPos().col).isValid()){
+                    if(isLivre(Pos(nav->getPos().lin+i+1,nav->getPos().col))){
+                        tab[10*(nav->getPos().lin+i+1)+(nav->getPos().col)] = EstadoPos::BLOQUEADA;
+                    }
+                }
+                //bloqueia lateral de cima
+                if(Pos(nav->getPos().lin+i-1,nav->getPos().col).isValid()){
+                    if(isLivre(Pos(nav->getPos().lin+i-1,nav->getPos().col))){
+                        tab[10*(nav->getPos().lin+i-1)+(nav->getPos().col)] = EstadoPos::BLOQUEADA;
+                    }
+                }
+            }
         }
 
     }
+    return true;
 }
 
 bool Tabuleiro::isLivre(Pos p){
@@ -275,3 +290,95 @@ bool Tabuleiro::digitar(){
 
 }
 
+void Tabuleiro::initAuto(){
+    srand(time(NULL));
+    Pos p;
+    char dir;
+    bool c;
+    initTab();
+
+    for (int i=0;i<NUM_MAX_P;i++){
+        navios.push_back(new Porta_Avioes());
+
+        do{
+            // posição aleatoria
+            p.lin = int(rand() % 10);
+            p.col = int (rand() % 10);
+
+            if(!p.isValid())
+                continue;
+            //cout << "AQUI!";
+            if(((p.lin*p.col)+p.lin+p.col)%2)
+                dir = 'H';
+            else
+                dir = 'V';
+            navios.back()->setPos(p);
+            navios.back()->setDir(dir);
+            c = !addToTab(navios.back()->clone());
+            cout << c << endl;
+        }while(c);
+    }
+    for (int i=0;i<NUM_MAX_C;i++){
+        navios.push_back(new Cruzador());
+
+        do{
+            // posição aleatoria
+            p.lin = int(rand() % 10);
+            p.col = int (rand() % 10);
+
+            if(!p.isValid())
+                continue;
+            //cout << "AQUI!";
+            if(((p.lin*p.col)+p.lin+p.col)%2)
+                dir = 'H';
+            else
+                dir = 'V';
+            navios.back()->setPos(p);
+            navios.back()->setDir(dir);
+            c = !addToTab(navios.back()->clone());
+            cout << c << endl;
+        }while(c);
+    }
+    for (int i=0;i<NUM_MAX_D;i++){
+        navios.push_back(new Destroyer());
+
+        do{
+            // posição aleatoria
+            p.lin = int(rand() % 10);
+            p.col = int (rand() % 10);
+
+            if(!p.isValid())
+                continue;
+            //cout << "AQUI!";
+            if(((p.lin*p.col)+p.lin+p.col)%2)
+                dir = 'H';
+            else
+                dir = 'V';
+            navios.back()->setPos(p);
+            navios.back()->setDir(dir);
+            c = !addToTab(navios.back()->clone());
+            cout << c << endl;
+        }while(c);
+    }
+    for (int i=0;i<NUM_MAX_S;i++){
+        navios.push_back(new Submarino());
+
+        do{
+            // posição aleatoria
+            p.lin = int(rand() % 10);
+            p.col = int (rand() % 10);
+
+            if(!p.isValid())
+                continue;
+            //cout << "AQUI!";
+            if(((p.lin*p.col)+p.lin+p.col)%2)
+                dir = 'H';
+            else
+                dir = 'V';
+            navios.back()->setPos(p);
+            navios.back()->setDir(dir);
+            c = !addToTab(navios.back()->clone());
+            cout << c << endl;
+        }while(c);
+    }
+}

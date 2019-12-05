@@ -12,6 +12,7 @@ enum class EstadoPos
   LIVRE,
   BLOQUEADA,
   ATINGIDA,
+  ERRADA,
   PORTA_AVIAO,
   CRUZADOR,
   DESTROYER,
